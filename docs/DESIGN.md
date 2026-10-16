@@ -4,9 +4,9 @@
 `flows summary` answers "what flows here": which hosts, which endpoints, how much, how often, with what status. A tool of the
 `cli-*` family: CLI, its MCP twin, a skill, a plugin in the marketplace, 100 % coverage, RED contracts.
 
-The repository is generic: it knows HTTP, TLS, proxies and runtimes — no particular product or service. What is specific to
-one (how to point it at the proxy, how to read its API) is a **local plugin** of the person who runs it, outside this
-repository.
+The repository is generic: it knows HTTP, TLS, proxies and runtimes. It may hold presets and analyzers only for what their
+vendors document publicly (see "Built in, or local"); everything beyond that is a **local plugin** of the person who runs it,
+outside this repository.
 
 ## Why
 
@@ -35,7 +35,22 @@ flows mcp                      the same as MCP tools
   patterns in bodies are redacted in the record. The raw capture (secrets included) only with `--raw`. Runs are kept in
   `~/.cache/cli-flows/runs/`, never in the working directory.
 
-## Local plugins — what this repository does not hold
+## Built in, or local
+
+**Built in** (in this repository, with neutral wording — "documented proxy and gateway settings", "the format of an API"):
+- presets that set only what a program's vendor documents for proxies and gateways — its base-URL variable, `HTTPS_PROXY`, its
+  CA setting — the same thing the vendor's own docs tell a company to do;
+- analyzers of publicly documented API formats (request and response shapes, usage fields), as any client library reads them.
+
+**Local only** (never in this repository, its docs or tests):
+- decoding undocumented or internal traffic: telemetry, internal endpoints, a product's internal prompts or payloads;
+- anything that works around a protection (certificate pinning and the like);
+- describing the tool as a way to see what a particular product hides.
+
+Which built-in presets and analyzers to ship is decided in slice 2, each against its vendor's public documentation (linked in
+the preset). The plugin contract is the same for both, so the line can move without changing the core.
+
+## Local plugins
 
 A plugin is a module in `~/.config/cli-flows/plugins/<name>/` (or a path given by `FLOWS_PLUGINS`), loaded at run time and
 never shipped. It may add:
@@ -45,7 +60,7 @@ never shipped. It may add:
 - **redactions**: the secret fields of one API beyond the generic ones.
 
 The repository defines the plugin contract (an abstract class, as the other `cli-*` tools do), a generic JSON analyzer and the
-tests of the contract; `flows plugins` lists what is loaded. Nothing in the repository, its docs or its tests names a product.
+tests of the contract; `flows plugins` lists what is loaded, built in and local alike.
 
 ## The engine: mitmproxy, fetched — not shipped, not installed by npm
 
@@ -72,7 +87,8 @@ catalog for the CLI and the MCP twin, `npm run check` (oxlint, strict tsc, `node
 
 1. `run` (forward and reverse), the mitmproxy addon writing redacted JSONL, `ls`, `summary`; the engine found on `PATH` or
    fetched with `setup` (checksums); the MCP twin.
-2. The plugin contract and its loader (`plugins`, presets, analyzers, redactions), `show`, `diff`.
+2. The plugin contract and its loader (`plugins`, presets, analyzers, redactions), `show`, `diff`; the built-in presets and
+   analyzers for documented settings and formats, each with its vendor's documentation linked.
 
 ## Open
 
