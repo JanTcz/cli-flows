@@ -29,7 +29,7 @@ function deps(over: Partial<EngineDeps> = {}): EngineDeps & { asked: string[] } 
   const asked: string[] = [];
   const bytes = build('mitmproxy.app/Contents/MacOS/mitmdump');
   return {
-    asked, cache: mkdtempSync(join(dir, 'cache-')), platform: 'darwin-arm64', which: () => undefined, base: 'https://dl.test',
+    asked, cache: mkdtempSync(join(dir, 'cache-')), platform: 'darwin-arm64', which: () => void 0, base: 'https://dl.test',
     pins: { 'darwin-arm64': { file: 'macos-arm64.tar.gz', sha256: sha(bytes), binary: 'mitmproxy.app/Contents/MacOS/mitmdump' } },
     fetch: (url) => { asked.push(url); return Promise.resolve(bytes); }, unpack: unpackArchive,
     ...over,

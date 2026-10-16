@@ -27,6 +27,7 @@ test('UC-6: a call runs the CLI; run and setup are no tools', async () => {
   await ask({ id: 3, method: 'tools/call', params: { name: 'ls', arguments: {} } });
   assert.deepEqual(ran[1], ['ls']);
   for (const name of ['run', 'setup']) {
+    // oxlint-disable-next-line no-await-in-loop -- one call after another
     assert.deepEqual((await ask({ id: 4, method: 'tools/call', params: { name, arguments: {} } })).error, { code: -32_602, message: `no tool ${name}` });
   }
   assert.deepEqual((await ask({ id: 5, method: 'tools/call', params: { name: 'summary', arguments: {} } })).error, { code: -32_602, message: 'summary: run is required' });

@@ -19,4 +19,6 @@ jobs:
       - run: npm ci
       - run: npm run check
       - name: The package builds, and the built command runs
-        run: npm run build && node dist/bin/proxmox.js --help
+        run: npm run build && node dist/bin/flows.js --help
+      - name: The pinned engine is fetched and checked, and the contract holds against it
+        run: node bin/flows.ts setup && npm run contract

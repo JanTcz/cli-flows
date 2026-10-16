@@ -40,7 +40,7 @@
     "check": "npm run lint && npm run typecheck && npm test",
     "hooks": "git config core.hooksPath hooks",
     "contract": "node --test --test-timeout=60000 test/contract/*.test.ts",
-    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp -R src/addon dist/src/addon",
     "prepack": "npm run build"
   },
   "devDependencies": {

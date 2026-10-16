@@ -74,8 +74,9 @@ MITM would need a third-party certificate library — more work and more depende
 - **No postinstall script**: many run npm with `--ignore-scripts`, and a package that downloads binaries on install is what
   supply-chain checks flag.
 - **Checksums pinned in the package.** mitmproxy publishes none next to the builds (checked 2026-10-16), so the package carries a
-  sha256 per platform for its pinned version, computed when the version is bumped and cross-checked against the digest GitHub
-  shows for the release's assets. A download that does not match is deleted and refused by name; nothing is run.
+  sha256 per platform for its pinned version, computed when the version is bumped from the files the official host serves over
+  HTTPS (the GitHub release carries no assets to cross-check — checked 2026-10-16: trust on first download). A later download that
+  does not match is refused by name and nothing is run. The pinned sums are in `src/engine.ts` and docs/features/01-record.md.
 
 ## Shape
 

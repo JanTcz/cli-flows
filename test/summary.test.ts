@@ -21,7 +21,7 @@ function makeRun(id: string, started: number, records: FlowRecord[], exit = 0): 
   const at = join(dir, id);
   mkdirSync(at, { recursive: true });
   writeFileSync(join(at, 'meta.json'), JSON.stringify({ id, command: ['curl', 'https://a.test/'], mode: { kind: 'forward' }, started, ended: started + 1000, exit, flows: records.length }));
-  writeFileSync(join(at, 'flows.jsonl'), records.map((r) => JSON.stringify(r)).join('\n') + (records.length ? '\n' : ''));
+  writeFileSync(join(at, 'flows.jsonl'), records.map((r) => JSON.stringify(r)).join('\n') + (records.length > 0 ? '\n' : ''));
 }
 
 test('UC-5: an endpoint is the method and the path, its ids folded to :id and its query left out', () => {

@@ -22,7 +22,8 @@ else {
     const out = createConnection(process.env.FLOWS_SOCKET, () => {
       for (const flow of flows) out.write(`${JSON.stringify(flow)}\n`);
     });
-    process.on('SIGTERM', () => { out.end(() => { server.close(); process.exit(0); }); });
+    // FAKE_MODE=stubborn: an engine that ignores SIGTERM, to be killed.
+    process.on('SIGTERM', () => { if (process.env.FAKE_MODE !== 'stubborn') out.end(() => { server.close(); process.exit(0); }); });
   });
   if (process.env.FAKE_LOG) appendFileSync(process.env.FAKE_LOG, 'started\n');
 }

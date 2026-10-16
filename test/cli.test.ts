@@ -41,6 +41,7 @@ test('UC-6: run takes its options before --, the command after it, and exits wit
 
 test('UC-6: run without -- or a command, --env without --reverse, an unknown option — usage, exit 2', async () => {
   for (const argv of [['run', 'curl'], ['run', '--'], ['run', '--env', 'X', '--', 'a'], ['run', '--colour', '--', 'a'], ['run', '--reverse', '--', 'a']]) {
+    // oxlint-disable-next-line no-await-in-loop -- one call after another, each its own fake
     const { code, err, recorded } = await cli(argv);
     assert.equal(code, 2, argv.join(' '));
     assert.match(err.join('\n'), /usage: flows run/u, argv.join(' '));
@@ -49,7 +50,7 @@ test('UC-6: run without -- or a command, --env without --reverse, an unknown opt
 });
 
 test('UC-6: with no engine, run says how to get one; setup fetches it and says where', async () => {
-  const none = await cli(['run', '--', 'curl', 'x'], { engine: () => undefined });
+  const none = await cli(['run', '--', 'curl', 'x'], { engine: () => void 0 });
   assert.equal(none.code, 1);
   assert.deepEqual(none.err, ['flows: no mitmdump on PATH and none fetched: run `flows setup` (or install mitmproxy)']);
   const setup = await cli(['setup']);
@@ -75,6 +76,7 @@ test('UC-6: ls and summary read the runs; --json is the data; an unknown run is 
 
 test('UC-6: no command, an unknown one, a missing argument — usage, exit 2; --help, the commands', async () => {
   for (const argv of [[], ['frobnicate'], ['summary'], ['ls', 'extra']]) {
+    // oxlint-disable-next-line no-await-in-loop -- one call after another, each its own fake
     const { code, err } = await cli(argv);
     assert.equal(code, 2, argv.join(' '));
     assert.match(err.join('\n'), /usage: flows/u);
