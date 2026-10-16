@@ -1,0 +1,51 @@
+{
+  "name": "cli-flows",
+  "version": "0.1.0",
+  "description": "What flows here: run a command through a man-in-the-middle proxy and see which hosts and endpoints it talks to, how much and how often \u2014 redacted by default. A CLI and its MCP twin.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jan Truhlar <me@jant.cz>",
+  "homepage": "https://github.com/JanTcz/cli-flows#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanTcz/cli-flows.git"
+  },
+  "bugs": "https://github.com/JanTcz/cli-flows/issues",
+  "keywords": [
+    "http",
+    "https",
+    "proxy",
+    "mitm",
+    "traffic",
+    "debugging",
+    "mcp",
+    "cli"
+  ],
+  "bin": {
+    "cli-flows": "dist/bin/flows.js",
+    "flows": "dist/bin/flows.js"
+  },
+  "files": [
+    "dist",
+    "src/addon",
+    "agents"
+  ],
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "lint": "oxlint --deny-warnings",
+    "typecheck": "tsc",
+    "test": "node --test --test-timeout=20000 --experimental-test-coverage --test-coverage-include='src/**' --test-coverage-exclude='src/main.ts' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 'test/*.test.ts'",
+    "check": "npm run lint && npm run typecheck && npm test",
+    "hooks": "git config core.hooksPath hooks",
+    "contract": "node --test --test-timeout=60000 test/contract/*.test.ts",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "oxlint": "^1.86.0",
+    "typescript": "^7.0.2"
+  }
+}
